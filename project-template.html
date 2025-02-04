@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Name - Keshav Pal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <div class="space-background">
+        <div class="planet planet-1"></div>
+        <div class="planet planet-2"></div>
+        <div class="planet planet-3"></div>
+    </div>
+    <div id="particles-js"></div>
+    <div class="container">
+        <header class="project-detail-header">
+            <a href="projects.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+            <h1>Project Name</h1>
+            <div class="project-tags">
+                <span>Tag1</span>
+                <span>Tag2</span>
+                <span>Tag3</span>
+            </div>
+        </header>
+
+        <section class="project-content">
+            <div class="project-info">
+                <div class="info-item">
+                    <i class="fas fa-code-branch"></i>
+                    <span>Latest Version: v1.0</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>Last Updated: Date</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-language"></i>
+                    <span>Language: Python</span>
+                </div>
+            </div>
+
+            <div class="project-description">
+                <h2>About</h2>
+                <p>Project description goes here...</p>
+            </div>
+
+            <div class="project-features">
+                <h2>Features</h2>
+                <ul>
+                    <li><i class="fas fa-check"></i> Feature 1</li>
+                    <li><i class="fas fa-check"></i> Feature 2</li>
+                    <li><i class="fas fa-check"></i> Feature 3</li>
+                </ul>
+            </div>
+
+            <div class="project-installation">
+                <h2>Installation</h2>
+                <div class="code-block">
+                    <pre><code>git clone repository_url
+cd project_name
+pip install -r requirements.txt</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="project-usage">
+                <h2>Usage</h2>
+                <div class="code-block">
+                    <pre><code>python script.py --option value</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="project-links">
+                <a href="#" class="btn" target="_blank">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+                <a href="#" class="btn" target="_blank">
+                    <i class="fas fa-download"></i> Download
+                </a>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
