@@ -32,7 +32,7 @@ A modern, interactive portfolio website showcasing cybersecurity projects and to
 
 ## 🌐 Live Demo
 
-Visit: https://kezai.online
+Visit: https://www.kezai.online
 
 ## 📱 Mobile Support
 
