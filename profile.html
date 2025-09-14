@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- The 'head' contains metadata and links to other files -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    
+    <!-- This line is important: it links your CSS file to style the page -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- This div will hold the background video -->
+    <div id="video-background">
+        <div id="youtube-player"></div>
+    </div>
+
+    <!-- The 'body' contains the visible content of your page -->
+
+    <!-- A container to hold and center the profile elements -->
+    <div class="profile-container">
+    
+        <!-- The profile image. You can change the 'src' to your own image URL -->
+        <img src="https://www.mygreatlearning.com/blog/wp-content/uploads/2020/10/shutterstock_1096975310.jpg.webp" alt="Profile Picture" class="profile-image">
+        
+        <!-- The heading for the user's name -->
+        <h1 class="profile-name">Keshav Pal</h1>
+        
+    </div>
+
+    <!-- Mute/Unmute Button -->
+    <button id="mute-toggle" class="mute-btn">
+        <svg class="icon-muted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+        <svg class="icon-unmuted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.28 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    </button>
+
+    <!-- Load YouTube Iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- YouTube Background Logic ---
+            let player;
+            
+            // This function is called by the YouTube Iframe API script.
+            // It must be globally available, so we attach it to the window object.
+            window.onYouTubeIframeAPIReady = function() {
+                // --- Add your YouTube video link here ---
+                const youtubeUrl = 'https://youtu.be/nzFIISz_Uo0?si=SnIWX1NhBT-Bjjzs'; // Example video
+                const videoId = getYouTubeID(youtubeUrl);
+    
+                if (videoId) {
+                    player = new YT.Player('youtube-player', {
+                        videoId: videoId,
+                        playerVars: {
+                            'autoplay': 1, 'controls': 0, 'showinfo': 0, 'modestbranding': 1,
+                            'loop': 1, 'fs': 0, 'cc_load_policy': 0, 'iv_load_policy': 3,
+                            'autohide': 0, 'rel': 0, 'playlist': videoId // Required for looping to work
+                        },
+                        events: {
+                            'onReady': onPlayerReady
+                        }
+                    });
+                }
+            };
+    
+            function onPlayerReady(event) {
+                event.target.playVideo();
+            }
+    
+            function getYouTubeID(url) {
+                if (!url) return null;
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+            }
+    
+            // --- 3D Card Tilt Logic ---
+            const card = document.querySelector('.profile-container');
+            if (card) {
+                card.addEventListener('mousemove', (e) => {
+                    const { left, top, width, height } = card.getBoundingClientRect();
+                    const x = e.clientX - left;
+                    const y = e.clientY - top;
+                    const rotateX = (y / height - 0.5) * -30;
+                    const rotateY = (x / width - 0.5) * 30;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+    
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
+            }
+
+            // --- Mute Toggle Logic ---
+            const muteButton = document.getElementById('mute-toggle');
+            if (muteButton) {
+                const iconMuted = muteButton.querySelector('.icon-muted');
+                const iconUnmuted = muteButton.querySelector('.icon-unmuted');
+
+                muteButton.addEventListener('click', () => {
+                    // Ensure player and its methods are available
+                    if (player && typeof player.isMuted === 'function') {
+                        if (player.isMuted()) {
+                            player.unMute();
+                            iconMuted.style.display = 'none';
+                            iconUnmuted.style.display = 'block';
+                        } else {
+                            player.mute();
+                            iconMuted.style.display = 'block';
+                            iconUnmuted.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            // --- Fullscreen on First Interaction for Mobile ---
+            function handleFirstInteraction() {
+                // Check if it's likely a mobile device before requesting fullscreen
+                if (window.innerWidth <= 768) {
+                    const elem = document.documentElement;
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Safari */
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE11 */
+                        elem.msRequestFullscreen();
+                    }
+                }
+            }
+
+            // Listen for the first click or touch, then remove the listener
+            document.addEventListener('click', handleFirstInteraction, { once: true });
+            document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+        });
+    </script>
+</body>
+</html>
